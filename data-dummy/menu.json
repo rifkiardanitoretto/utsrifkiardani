@@ -1,0 +1,6 @@
+[
+    {"kode": "nx", "title": "Next JS"},
+    {"kode": "deno", "title": "Deno TS"},
+    {"kode": "php", "title": "PHP"},
+    {"kode": "js", "title": "Javascript"}
+]

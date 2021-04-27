@@ -1,65 +1,42 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+//@ts-nocheck
+// import styles from '../styles/Home.module.css'
+import Layout from '../component/layout'
+import Jumbotron from '../component/jumbotron'
+import Articel from '../component/articel'
+import Pagination from '../component/pagination'
+import Sidebar from '../component/sidebar'
+import Post from '../data-dummy/post.json'
 
-export default function Home() {
+export default function Home({ menu, post }) {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+    <div>
+      <Layout LayoutProps = { menu }>
+        <Jumbotron />
+        <div className="row">
+          <div className="col-md-8">
+            <h3 className="pb-4 mb-4 fst-italic border-bottom">
+              From the Firehose
+            </h3>
+            {
+              post.map(p => (
+                <Articel key = {p.id} post = {p} />
+              ))
+            }
+            <Pagination />
+          </div>
+          <Sidebar />
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      </Layout>
     </div>
   )
+}
+export async function getStaticProps(){
+  const req = await fetch('http://localhost:3000/api/hello')
+  const res = await req.json()
+  return{
+    props : {
+      menu : res,
+      post : Post
+    }
+  }
 }
